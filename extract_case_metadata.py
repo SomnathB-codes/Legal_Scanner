@@ -215,10 +215,34 @@ CNR_DISTRICT_MAP = {
     "MNNT": ("Thoubal", "Manipur"),
     "MNSP": ("Senapati", "Manipur"),
     "MNUK": ("Ukhrul", "Manipur"),
-    "MNCH": ("Churachandpur", "Manipur"),
+    "MNCP": ("Churachandpur", "Manipur"),
+    "MNCD": ("Chandel", "Manipur"),
+    "MNTL": ("Tamenglong", "Manipur"),
+    
     
     # Meghalaya
-    "MLSH": ("East Khasi Hills", "Meghalaya"),
+    "MLSH": ("East Khasi Hills (Shillong)", "Meghalaya"),
+    "MLWK": ("West Khasi Hills", "Meghalaya"),
+    "MLSW": ("South West Khasi Hills", "Meghalaya"),
+    "MLEW": ("Eastern West Khasi Hills", "Meghalaya"),
+    "MLRB": ("Ri Bhoi", "Meghalaya"),
+    "MLWJ": ("West Jaintia Hills", "Meghalaya"),
+    "MLEJ": ("East Jaintia Hills", "Meghalaya"),
+    "MLWG": ("West Garo Hills", "Meghalaya"),
+    "MLEG": ("East Garo Hills", "Meghalaya"),
+    "MLSG": ("South Garo Hills", "Meghalaya"),
+    "MLNG": ("North Garo Hills", "Meghalaya"),
+    "MLSW": ("South West Garo Hills", "Meghalaya"),
+    "MLKL": ("East Jaintia Hills (Khliehriat)", "Meghalaya"),
+    "MLMR": ("Eastern West Khasi Hills (Mairang)", "Meghalaya"),
+    "MLTU": ("West Garo Hills (Tura)", "Meghalaya"),
+    "MLJW": ("West Jaintia Hills (Jowai)", "Meghalaya"),
+    "ML07": ("East Garro Hills", "Meghalaya"),  # old code for East Garo Hills, still appears in some CNRs
+    "ML12": ("South West Khasi Hills", "Meghalaya"),  # old code for South West Khasi Hills, still appears in some CNRs
+    "MLNS": ("West Khasi Hills (Nongstoin)", "Meghalaya"),
+    "MLAP": ("South West Garo Hills (Ampati)", "Meghalaya"),
+    "MLKA": ("Khasi Hills Autonomous District", "Meghalaya"),
+    "MLJA": ("Jaintia Hills Autonomous District", "Meghalaya"),
     # Nagaland
     "NLKH": ("Kohima", "Nagaland"),
     "NLDM": ("Dimapur", "Nagaland"),
