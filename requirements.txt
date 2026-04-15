@@ -1,0 +1,10 @@
+streamlit
+pytesseract
+pdf2image
+opencv-python
+numpy
+pdfplumber
+supabase
+gspread
+google-auth
+pandas
