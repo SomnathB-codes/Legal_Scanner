@@ -1,0 +1,55 @@
+# =========================
+# 🔐 Secrets & Credentials
+# =========================
+.streamlit/secrets.toml
+secret.toml
+case-data-app-*.json
+*.key
+*.pem
+
+# =========================
+# 🐍 Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# =========================
+# 🧪 Virtual Environment
+# =========================
+venv/
+.env
+.env.*
+
+# =========================
+# 📄 Logs & Temp Files
+# =========================
+*.log
+*.tmp
+*.temp
+
+# =========================
+# 🖼️ OCR / Generated Files
+# =========================
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.csv
+*.xlsx
+
+# =========================
+# 🛠️ IDE / Editor Files
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# 🚀 OS Files
+# =========================
+.DS_Store
+Thumbs.db
