@@ -459,7 +459,25 @@ CNR_DISTRICT_MAP = {
    "LDLH": ("Leh", "Ladakh"),
     
     # West Bengal
-    "WBKL": ("Kolkata", "West Bengal"),
+    "WBJP": ("Jalpaiguri/Alipurduar(ambiguous)", "West Bengal"),
+    "WBBK": ("Bankura", "West Bengal"),
+    "WBBB": ("Birbhum", "West Bengal"),
+    "WBCS": ("Kolkata (Calcutta)", "West Bengal"),
+    "WBCB": ("Cooch Behar", "West Bengal"),
+    "WBDJ": ("Darjeeling/kalimpong(ambiguous)", "West Bengal"),
+    "WBHG": ("Hooghly", "West Bengal"),
+    "WBHW": ("Howrah", "West Bengal"),
+    "WBWM": ("Jhargram/Paschim Medinipur(ambiguous)", "West Bengal"),
+    "WBML": ("Malda", "West Bengal"),
+    "WBMD": ("MUrshidabad", "West Bengal"),
+    "WBND": ("Nadia", "West Bengal"),
+    "WBNP": ("North 24 Parganas", "West Bengal"),
+    "WBUD": ("North Dinajpur", "West Bengal"),
+    "WBBD": ("Paschim Bardhaman/Purba Bardhaman(ambiguous)", "West Bengal"),
+    "WBEM": ("Purba Medinipur", "West Bengal"),
+    "WBPU": ("Purulia", "West Bengal"),
+    "WBSP": ("South 24 Parganas", "West Bengal"),
+    
     # Bihar
     "BRPT": ("Patna", "Bihar"),
     # Uttar Pradesh
