@@ -1,17 +1,4 @@
-"""
-Court Case Metadata Extractor
-==============================
-Extracts structured metadata from Indian eCourts PDF case detail pages.
-
-Requirements:
-    pip install pdfplumber
-
-Usage (Jupyter Notebook):
-    process_folder("./pdfs", "cases_metadata.json")
-
-Usage (Terminal):
-    python extract_case_metadata.py --input ./pdfs --output cases.json
-"""
+# Court Case Metadata Extractor
 
 import re
 import sys
@@ -332,12 +319,145 @@ CNR_DISTRICT_MAP = {
     "MHWR": ("Wardha", "Maharashtra"),
     "MHWS": ("Washim", "Maharashtra"),
     "MHYA": ("Yavatmal", "Maharashtra"),
+    
     # Tamil Nadu
+    "TNAL": ("Ariyalur", "Tamil Nadu"),
+    "TNCG": ("Chengalpattu", "Tamil Nadu"),
     "TNCH": ("Chennai", "Tamil Nadu"),
+    "TNCB": ("Coimbatore", "Tamil Nadu"),
+    "TNCD": ("Cuddalore", "Tamil Nadu"),
+    "TNDP": ("Dharmapuri", "Tamil Nadu"),
+    "TNDG": ("Dindigul", "Tamil Nadu"),
+    "TNED": ("Erode", "Tamil Nadu"),
+    "TNKA": ("Kallakurichi", "Tamil Nadu"),
+    "TNKP": ("Kancheepuram", "Tamil Nadu"),
+    "TNKK": ("Kanyakumari", "Tamil Nadu"),
+    "TNKR": ("Karur", "Tamil Nadu"),
+    "TNKI": ("Krishnagiri", "Tamil Nadu"),
+    "TNMD": ("Madurai", "Tamil Nadu"),
+    "TNMY": ("Mayiladuthurai", "Tamil Nadu"),
+    "TNNG": ("Nagapattinam", "Tamil Nadu"),
+    "TNNM": ("Namakkal", "Tamil Nadu"),
+    "TNNS": ("Nilgiris", "Tamil Nadu"),
+    "TNPB": ("Perambalur", "Tamil Nadu"),
+    "TNPD": ("Pudukkottai", "Tamil Nadu"),
+    "TNRM": ("Ramanathapuram", "Tamil Nadu"),
+    "TNRP": ("Ranipet", "Tamil Nadu"),
+    "TNSA": ("Salem", "Tamil Nadu"),
+    "TNSV": ("Sivaganga", "Tamil Nadu"),
+    "TNTS": ("Tenkasi", "Tamil Nadu"),
+    "TNTJ": ("Thanjavur", "Tamil Nadu"),
+    "TNTH": ("Theni", "Tamil Nadu"),
+    "TNTT": ("Thoothukudi", "Tamil Nadu"),
+    "TNTP": ("Tiruchirappalli", "Tamil Nadu"),
+    "TNTL": ("Tirunelveli", "Tamil Nadu"),
+    "TNTU": ("Tirupathur", "Tamil Nadu"),
+    "TNTI": ("Tiruppur", "Tamil Nadu"),
+    "TNTR": ("Tiruvallur", "Tamil Nadu"),
+    "TNTM": ("Tiruvannamalai", "Tamil Nadu"),
+    "TNTV": ("Tiruvarur", "Tamil Nadu"),
+    "TNVL": ("Vellore", "Tamil Nadu"),
+    "TNVP": ("Viluppuram", "Tamil Nadu"),
+    "TNVR": ("Virudhunagar", "Tamil Nadu"),
+
     # Telangana
-    "TSHD": ("Hyderabad", "Telangana"),
+    "TSAD": ("Adilabad", "Telangana"),
+    "TSBK": ("Bhadradri Kothagudem", "Telangana"),
+    "TSWR": ("Hanumakonda", "Telangana"),
+    "TSJI": ("Jagtial", "Telangana"),
+    "TSJN": ("Jangaon", "Telangana"),
+    "TSJB": ("Jayashankar Bhupalapally", "Telangana"),
+    "TSJG": ("Jogulamba Gadwal", "Telangana"),
+    "TSKM": ("Kamareddy", "Telangana"),
+    "TSKA": ("Karimnagar", "Telangana"),
+    "TSKH": ("Khammam", "Telangana"),
+    "TSKB": ("Kumuram Bheem Asifabad", "Telangana"),
+    "TSMH": ("Mahabubabad", "Telangana"),
+    "TSMA": ("Mahabubnagar", "Telangana"),
+    "TSMN": ("Mancherial", "Telangana"),
+    "TSME": ("Medak", "Telangana"),
+    "TSMM": ("Medchal Malkajgiri", "Telangana"),
+    "TSML": ("Mulugu", "Telangana"),
+    "TSNG": ("Nagarkurnool", "Telangana"),
+    "TSNA": ("Nalgonda", "Telangana"),
+    "TSNP": ("Narayanpet", "Telangana"),
+    "TSNR": ("Nirmal", "Telangana"),
+    "TSNI": ("Nizamabad", "Telangana"),
+    "TSPD": ("Peddapalli", "Telangana"),
+    "TSRS": ("Rajanna Sircilla", "Telangana"),
+    "TSRA": ("Rangareddy", "Telangana"),
+    "TSSN": ("Sangareddy", "Telangana"),
+    "TSSD": ("Siddipet", "Telangana"),
+    "TSSR": ("Suryapet", "Telangana"),
+    "TSVK": ("Vikarabad", "Telangana"),
+    "TSWN": ("Wanaparthy", "Telangana"),
+    "TSWL": ("Warangal", "Telangana"),
+    "TSYB": ("Yadadri Bhuvanagiri", "Telangana"),
+    # Hyderabad — Multiple Separate Court Units
+    "TSHB": ("Hyderabad - City Civil Court", "Telangana"),
+    "TSSC": ("Hyderabad - City Small Cause Court", "Telangana"),
+    "TSMS": ("Hyderabad - Metropolitan Sessions Court", "Telangana"),
+    "TSCB": ("Hyderabad - Prl. CBI Court", "Telangana"),
+    "TSIF": ("Hyderabad - Integrated Family Courts", "Telangana"),
+    "TSFC": ("Hyderabad - Family Court", "Telangana"),
+    
     # Karnataka
-    "KABG": ("Bengaluru", "Karnataka"),
+    "KABK": ("Bagalkote", "Karnataka"),
+    "KABI": ("Ballari", "Karnataka"),
+    "KABG": ("Belagavi", "Karnataka"),
+    "KABC": ("Bengaluru Urban", "Karnataka"),
+    "KABR": ("Bengaluru Rural", "Karnataka"),
+    "KABD": ("Bidar", "Karnataka"),
+    "KACN": ("Chamarajanagara", "Karnataka"),
+    "KACB": ("Chikkaballapura ", "Karnataka"),
+    "KACM": ("Chikkamagaluru", "Karnataka"),
+    "KACD": ("Chitradurga", "Karnataka"),
+    "KADK": ("Dakshina Kannada", "Karnataka"),
+    "KADG": ("Davanagere", "Karnataka"),
+    "KADW": ("Dharwad", "Karnataka"),
+    "KAGD": ("Gadag", "Karnataka"),
+    "KAHS": ("Hassan", "Karnataka"),
+    "KAHV": ("Haveri", "Karnataka"),
+    "KA32": ("Kalaburagi", "Karnataka"),
+    "KAKD": ("Kodagu", "Karnataka"),
+    "KAKL": ("Kolar", "Karnataka"),
+    "KAKP": ("Koppal", "Karnataka"),
+    "KAMD": ("Mandya", "Karnataka"),
+    "KAMS": ("Mysuru", "Karnataka"),
+    "KARC": ("Raichur", "Karnataka"),
+    "KARN": ("Ramanagara", "Karnataka"),
+    "KA14": ("Shivamogga", "Karnataka"),
+    "KATK": ("Tumakuru", "Karnataka"),
+    "KAUP": ("Udupi", "Karnataka"),
+    "KAUK": ("Uttara Kannada", "Karnataka"),
+    "KAVP": ("Vijayapura", "Karnataka"),
+    "KAVN": ("Vijayanagara", "Karnataka"),
+    "KAYG": ("Yadgir", "Karnataka"),
+
+    # Andaman and Nicobar
+    "ANPB": ("Port Blair", "Andaman & Nicobar Islands"),
+
+    #The Dadra And Nagar Haveli And Daman And Diu
+   "UTDD": ("Daman/Diu", "Dadra & Nagar Haveli & Daman & Diu"),
+   "UTDN": ("Dadra & Nagar Haveli(Silvassa)", "Dadra & Nagar Haveli & Daman & Diu"),
+
+   # Puducherry
+   "PYPY": ("Puducherry", "Puducherry"),
+   "PYKL": ("Karaikal", "Puducherry"),
+   "PYME": ("Mahe", "Puducherry"),
+   "PYYM": ("Yanam", "Puducherry"),
+
+   # Lakshadweep
+   "KLLD": ("Lakshadweep (Kavaratti)", "Lakhsadweep"),
+
+   #Goa
+   "GANG": ("North Goa (Panaji)", "Goa"),
+   "GASG": ("South Goa (Margao)", "Goa"),
+
+   #Ladakh
+   "LDKR": ("Kargil", "Ladakh"),
+   "LDLH": ("Leh", "Ladakh"),
+    
     # West Bengal
     "WBKL": ("Kolkata", "West Bengal"),
     # Bihar
@@ -374,8 +494,7 @@ CNR_DISTRICT_MAP = {
     # Jammu & Kashmir
     "JKJM": ("Jammu", "Jammu & Kashmir"),
     "JKSR": ("Srinagar", "Jammu & Kashmir"),
-    # Goa
-    "GAPJ": ("Panaji", "Goa"),
+    
 }
 
 CNR_STATE_MAP = {
@@ -385,9 +504,9 @@ CNR_STATE_MAP = {
     "KA":"Karnataka","WB":"West Bengal","BR":"Bihar","UP":"Uttar Pradesh",
     "RJ":"Rajasthan","PB":"Punjab","HR":"Haryana","MP":"Madhya Pradesh",
     "CG":"Chhattisgarh","JH":"Jharkhand","OD":"Odisha","GJ":"Gujarat",
-    "KL":"Kerala","UK":"Uttarakhand","HP":"Himachal Pradesh",
-    "JK":"Jammu & Kashmir","GA":"Goa","AN":"Andaman & Nicobar",
-    "LD":"Lakshadweep","DN":"Dadra & Nagar Haveli","DD":"Daman & Diu",
+    "KL":"Kerala","UK":"Uttarakhand","HP":"Himachal Pradesh","KL":"Lakshadweep",
+    "JK":"Jammu & Kashmir","GA":"Goa","AN":"Andaman & Nicobar Islands",
+    "UT":"Dadra & Nagar Haveli & Daman & Diu","LD":"Ladakh",
     "PY":"Puducherry","CH":"Chandigarh",
 }
 
