@@ -1,21 +1,3 @@
-"""
-sheets.py — Google Sheets helper (fixed)
-==========================================
-Appends / updates court case rows in a Google Sheet.
-All 23 fields including full_text are written correctly.
-
-Setup:
-    pip install gspread google-auth
-
-.streamlit/secrets.toml:
-    [gsheets]
-    spreadsheet_id = "1BxiM..."
-    worksheet_name = "Cases"
-    service_account_json = "service_account.json"
-    # OR inline JSON:
-    # service_account_info = '{"type":"service_account",...}'
-"""
-
 import json
 import os
 import streamlit as st
