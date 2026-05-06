@@ -1,4 +1,17 @@
-# Court Case Metadata Extractor
+"""
+Court Case Metadata Extractor
+==============================
+Extracts structured metadata from Indian eCourts PDF case detail pages.
+
+Requirements:
+    pip install pdfplumber
+
+Usage (Jupyter Notebook):
+    process_folder("./pdfs", "cases_metadata.json")
+
+Usage (Terminal):
+    python extract_case_metadata.py --input ./pdfs --output cases.json
+"""
 
 import re
 import sys
@@ -138,6 +151,9 @@ def detect_court_level(court_name: str) -> str:
         return "Sessions"
     if any(k in name for k in ["magistrate", "judicial", "jmfc", "acjm", "cjm"]):
         return "Magistrate"
+    if any(k in name for k in ["civil judge", "civil court", "cj sr", "cj jr",
+                            "sr. divn", "jr. divn", "sr divn", "jr divn"]):
+        return "Civil"
     return "Unknown"
 
 
@@ -149,12 +165,13 @@ CNR_DISTRICT_MAP = {
     # Tripura
     "TRWT": ("West Tripura", "Tripura"),
     "TRSE": ("Sepahijala", "Tripura"),
-    "TRDH": ("Dhalai", "Tripura"),
+    "TRDL": ("Dhalai", "Tripura"),
     "TRNT": ("North Tripura", "Tripura"),
     "TRST": ("South Tripura", "Tripura"),
     "TRKH": ("Khowai", "Tripura"),
     "TRGT": ("Gomati", "Tripura"),
     "TRUT": ("Unakoti", "Tripura"),
+
     # Sikkim
     "SKNM": ("Namchi (South Sikkim)", "Sikkim"),
     "SKGT": ("Gangtok (East Sikkim)", "Sikkim"),
@@ -162,6 +179,7 @@ CNR_DISTRICT_MAP = {
     "SKGZ": ("Gyalshing (West Sikkim)", "Sikkim"),
     "SKSR": ("Soreng", "Sikkim"),
     "SKPK": ("Pakyong", "Sikkim"),
+
     # Assam
     "ASKM": ("Kamrup Metropolitan", "Assam"),
     "ASKR": ("Kamrup", "Assam"),
@@ -195,6 +213,7 @@ CNR_DISTRICT_MAP = {
     "ASBN": ("Bongaigaon", "Assam"),
     "ASDM": ("Dhemaji", "Assam"),
     "ASBK": ("Baksa", "Assam"),
+
     # Manipur
     "MNIW": ("Imphal West", "Manipur"),
     "MNIE": ("Imphal East", "Manipur"),
@@ -230,7 +249,8 @@ CNR_DISTRICT_MAP = {
     "MLAP": ("South West Garo Hills (Ampati)", "Meghalaya"),
     "MLKA": ("Khasi Hills Autonomous District", "Meghalaya"),
     "MLJA": ("Jaintia Hills Autonomous District", "Meghalaya"),
-    
+
+
     # Nagaland
     "NLDM": ("Dimapur", "Nagaland"),
     "NLKO": ("Kohima", "Nagaland"),
@@ -400,7 +420,7 @@ CNR_DISTRICT_MAP = {
     "TSCB": ("Hyderabad - Prl. CBI Court", "Telangana"),
     "TSIF": ("Hyderabad - Integrated Family Courts", "Telangana"),
     "TSFC": ("Hyderabad - Family Court", "Telangana"),
-    
+
     # Karnataka
     "KABK": ("Bagalkote", "Karnataka"),
     "KABI": ("Ballari", "Karnataka"),
@@ -457,7 +477,8 @@ CNR_DISTRICT_MAP = {
    #Ladakh
    "LDKR": ("Kargil", "Ladakh"),
    "LDLH": ("Leh", "Ladakh"),
-    
+
+   
     # West Bengal
     "WBJP": ("Jalpaiguri/Alipurduar(ambiguous)", "West Bengal"),
     "WBBK": ("Bankura", "West Bengal"),
@@ -477,7 +498,32 @@ CNR_DISTRICT_MAP = {
     "WBEM": ("Purba Medinipur", "West Bengal"),
     "WBPU": ("Purulia", "West Bengal"),
     "WBSP": ("South 24 Parganas", "West Bengal"),
-    
+
+    # Himachal Pradesh
+    "HPBI": ("Bilaspur", "Himachal Pradesh"),
+    "HPCH": ("Chamba", "Himachal Pradesh"),
+    "HPHA": ("Hamirpur", "Himachal Pradesh"),
+    "HPKA": ("Kangra", "Himachal Pradesh"),
+    "HPKI": ("Kinnaur", "Himachal Pradesh"),
+    "HPKU": ("Kullu", "Himachal Pradesh"),
+    "HPMA": ("Mandi", "Himachal Pradesh"),
+    "HPSH": ("Shimla", "Himachal Pradesh"),
+    "HPSR": ("Sirmaur", "Himachal Pradesh"),
+    "HPSO": ("Solan", "Himachal Pradesh"),
+    "HPUN": ("Una", "Himachal Pradesh"),
+
+     # Uttarakhand
+    "UKAL": ("Almora", "Uttarakhand"),
+    "UKBA": ("Bageshwar", "Uttarakhand"),
+    "UKCL": ("Chamoli", "Uttarakhand"),
+    "UKCP": ("Champawat", "Uttarakhand"),
+    "UKDD": ("Dehradun", "Uttarakhand"),
+    "UKHA": ("Haridwar", "Uttarakhand"),
+    "UKNA": ("Nainital", "Uttarakhand"),
+    "UKPG": ("Pauri Garhwal", "Uttarakhand"),
+    "UKPI": ("Pithoragarh", "Uttarakhand"),
+    "UKUS": ("Udham Singh Nagar", "Uttarakhand"),
+
     # Bihar
     "BRPT": ("Patna", "Bihar"),
     # Uttar Pradesh
@@ -489,7 +535,7 @@ CNR_DISTRICT_MAP = {
     "GJAH": ("Ahmedabad", "Gujarat"),
     "GJST": ("Surat", "Gujarat"),
     # Kerala
-    "KLKC": ("Ernakulam", "Kerala"),
+    "KLKT": ("Kottayam", "Kerala"),
     "KLTV": ("Thiruvananthapuram", "Kerala"),
     # Madhya Pradesh
     "MPBP": ("Bhopal", "Madhya Pradesh"),
@@ -505,10 +551,8 @@ CNR_DISTRICT_MAP = {
     "PBLD": ("Ludhiana", "Punjab"),
     # Haryana
     "HRGR": ("Gurugram", "Haryana"),
-    # Himachal Pradesh
-    "HPSM": ("Shimla", "Himachal Pradesh"),
-    # Uttarakhand
-    "UKDD": ("Dehradun", "Uttarakhand"),
+    
+   
     # Jammu & Kashmir
     "JKJM": ("Jammu", "Jammu & Kashmir"),
     "JKSR": ("Srinagar", "Jammu & Kashmir"),
@@ -807,6 +851,16 @@ def extract_orders(raw_rows: list, full_text: str = ""):
         ]):
             continue
 
+         # ── Stop at Case Transfer Details section ────────────────────────
+        # The "Case Transfer Details within Establishment" table appears right
+        # after Interim Orders and contains a "Transfer Date" column whose
+        # dates would otherwise be misread as interim order dates.
+        if any(k in joined_lower for k in [
+            "transfer date", "case transfer", "within establishment",
+        ]):
+            in_interim = False
+            continue
+
         # ── Standalone "Interim Orders" title row ────────────────────────
         if (
             "interim order" in joined_lower
@@ -857,18 +911,26 @@ def extract_orders(raw_rows: list, full_text: str = ""):
 def extract_hearing_purposes(raw_rows: list) -> list:
     """
     Scans Case History rows and builds a list of
-    "DD-MM-YYYY: <Purpose of Hearing>" strings, keyed on Business on Date.
+    "DD-MM-YYYY: <Purpose of Hearing>" strings, keyed on Hearing Date.
+
+    Case History table columns (standard 4-col layout):
+        Judge (0) | Business on Date (1) | Hearing Date (2) | Purpose of Hearing (3)
+
+    The key is Hearing Date (col 2) — the date the hearing is actually
+    scheduled to occur — NOT Business on Date (col 1), which is only
+    the date the case was last called to schedule the next hearing.
 
     Example output:
-        ["09-02-2026: P W S", "17-12-2025: hearing", "10-09-2025: Order", ...]
+        ["05-08-2026: Appereance", "01-04-2026: Appereance", "06-02-2026: SR", ...]
 
     Handles both the standard 4-col layout and extended 6-col layout.
     Also captures single-cell "Disposed" rows that appear in some PDFs.
     """
     purposes:   list = []
     in_history: bool = False
-    biz_col:    int  = 1
-    purp_col:   int  = 3
+    biz_col:    int  = 1   # Business on Date — used only as fallback
+    hear_col:   int  = 2   # Hearing Date     — primary key for output
+    purp_col:   int  = 3   # Purpose of Hearing
 
     for row in raw_rows:
         r            = [clean(c) for c in row]
@@ -883,8 +945,12 @@ def extract_hearing_purposes(raw_rows: list) -> list:
             in_history = True
             biz_col  = next((i for i, c in enumerate(r)
                              if "business" in c.lower()), 1)
+            # "Hearing Date" column — skip cells that also contain "purpose"
+            hear_col = next((i for i, c in enumerate(r)
+                             if "hearing" in c.lower()
+                             and "purpose" not in c.lower()), biz_col + 1)
             purp_col = next((i for i, c in enumerate(r)
-                             if "purpose" in c.lower()), biz_col + 2)
+                             if "purpose" in c.lower()), hear_col + 1)
             continue
 
         if not in_history:
@@ -902,20 +968,27 @@ def extract_hearing_purposes(raw_rows: list) -> list:
         if not any(c for c in r if c):
             continue
 
-        # ── Extract business date + purpose ───────────────────────────
-        biz_raw  = cell(row[biz_col]) if len(row) > biz_col else ""
-        purp_raw = r[purp_col]        if len(r)   > purp_col else ""
-        biz_date = normalise_date(biz_raw)
+        # ── Extract hearing date + purpose ────────────────────────────
+        # Key on Hearing Date (when the hearing actually takes place).
+        # Fall back to Business on Date only if Hearing Date is absent.
+        hear_raw = cell(row[hear_col]) if len(row) > hear_col else ""
+        purp_raw = r[purp_col]         if len(r)   > purp_col else ""
+        hear_date = normalise_date(hear_raw)
 
-        if biz_date:
+        if not hear_date:
+            # Fallback: try Business on Date
+            biz_raw   = cell(row[biz_col]) if len(row) > biz_col else ""
+            hear_date = normalise_date(biz_raw)
+
+        if hear_date:
             if purp_raw:
-                purposes.append(f"{biz_date}: {purp_raw}")
+                purposes.append(f"{hear_date}: {purp_raw}")
             else:
                 # Some PDFs show a lone "Disposed" cell in a merged row
                 for cell_val in r:
                     if cell_val and cell_val.lower() in (
                             "disposed", "disposal", "decided"):
-                        purposes.append(f"{biz_date}: {cell_val}")
+                        purposes.append(f"{hear_date}: {cell_val}")
                         break
 
     return purposes
@@ -958,15 +1031,16 @@ def parse_case(text: str, raw_rows: list) -> dict:
                 reg_date_raw = cell(row[3])
 
         # CNR Number row: ['CNR\nNumber', 'TRSE050000512026\n(Note...)', ...]
+        # Pattern allows alphanumeric body, e.g. WBSP0A0016752020 (digit+letter mix)
         if not cnr and r and "cnr" in r[0].lower():
             if len(r) > 1 and r[1]:
-                m = re.search(r'([A-Z]{2,4}\d{8,16})', r[1])
+                m = re.search(r'([A-Z]{2,4}[A-Z0-9]{8,16})', r[1])
                 if m:
                     cnr = m.group(1)
 
     # Fallback to regex on text if still missing
     if not cnr:
-        cnr = find_field(r'([A-Z]{2,4}\d{8,16})', text)
+        cnr = find_field(r'([A-Z]{2,4}[A-Z0-9]{8,16})', text)
     if not case_type:
         case_type = find_field(r'Case\s*Type\s*[:\-]?\s*(.+?)(?:\n|Filing)', text)
     if not filing_num:
@@ -978,23 +1052,56 @@ def parse_case(text: str, raw_rows: list) -> dict:
     reg_date    = normalise_date(reg_date_raw)
 
     # ── Court name ────────────────────────────────────────────────────
-    court_name = find_field(
+    # Match the court title on its first line, then optionally grab a second
+    # continuation line (e.g. "Sealdeh, South 24 Parganas" when pdfplumber
+    # inserts a newline mid-address).  After matching, chop off any trailing
+    # section-header text ("Case Details", "Case Type", "Filing …", etc.)
+    # that appears on the same run of text when there is no newline separator.
+    _court_pat = re.compile(
         r'(?:Establishment\s+of\s+)?'
-        r'((?:Addl\.?\s+)?(?:District\s+and\s+Sessions\s+Judge|'
-        r'Sessions\s+Judge|Chief\s+Judicial\s+Magistrate|'
-        r'Judicial\s+Magistrate|High\s+Court|Metropolitan\s+Magistrate|'
-        r'Civil\s+Judge)[^\n]{0,80})',
-        text
+        r'((?:Additional\s+|Addl\.?\s+|Principal\s+)?'
+        r'(?:District\s+and\s+Sessions\s+Judge|'
+        r'District\s+Judge|'
+        r'Sessions\s+Judge|'
+        r'Chief\s+Judicial\s+Magistrate|'
+        r'Judicial\s+Magistrate|'
+        r'High\s+Court|'
+        r'Metropolitan\s+Magistrate|'
+        r'Civil\s+Judge)'
+        r'[^\n]{0,80}'           # rest of the first line
+        r'(?:\n[^\n]{1,80})?)',  # optional second continuation line
+        re.IGNORECASE,
     )
+    _m = _court_pat.search(text)
+    court_name = clean(_m.group(1)) if _m else None
+
+    # Strip anything from a section-header keyword onwards (handles flat PDFs
+    # where court name and "Case Details / Case Type / Filing" share one line).
+    if court_name:
+        court_name = re.split(
+            r'\s+(?:Case\s+Details|Case\s+Type|Filing(?:\s+Number|\s+Date)?|'
+            r'CNR(?:\s+Number)?|Registration(?:\s+Number)?|'
+            r'Process\s+Details|Court\s+Number)\b',
+            court_name, maxsplit=1, flags=re.IGNORECASE
+        )[0]
     if not court_name:
+        # Blocklist for lines that are navigation/UI chrome from eCourts portal
+        _ui_noise = (
+            "back", "download", "case", "cnr", "filing", "about",
+            "registration", "under", "court number",
+            "e-committee", "skip to", "search menu", "language",
+            "process details", "location", "cause list", "caveat",
+            "site map", "newsletter", "forms for", "help videos",
+            "copyright", "hyperlinking", "accessibility", "disclaimer",
+            "this site", "national informatics", "content reviewed",
+            "terms and", "privacy policy", "all rights",
+        )
         for line in text.splitlines():
             line = clean(line)
-            if len(line) > 15 and not line.lower().startswith(
-                    ("back", "download", "case", "cnr", "filing", "about",
-                     "registration", "under", "court number")):
+            if len(line) > 15 and not line.lower().startswith(_ui_noise):
                 court_name = line
                 break
-    court_name  = court_name or "Unknown"
+    court_name  = court_name.rstrip(" ,") if court_name else "Unknown"
     court_level = detect_court_level(court_name)
     district, state = detect_location(court_name, cnr or "")
 
